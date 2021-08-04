@@ -26,7 +26,7 @@ RUN apt-get install -y zlib1g-dev pwgen openssl poppler-utils
 
 # Python3
 RUN apt-get install -y python3 python3-pip python3-setuptools python3-ldap python-rados
-RUN python3.6 -m pip install --upgrade pip && rm -r /root/.cache/pip
+RUN python3 -m pip install --upgrade pip && rm -r /root/.cache/pip
 
 RUN pip3 install --timeout=3600 click termcolor colorlog pymysql \
     django==1.11.29 && rm -r /root/.cache/pip
@@ -40,7 +40,7 @@ RUN pip3 install --timeout=3600 boto oss2 pycryptodome twilio python-ldap config
 
 
 # Scripts
-COPY scripts_7.1 /scripts
+COPY scripts /scripts
 COPY templates /templates
 COPY services /services
 RUN chmod u+x /scripts/*
@@ -60,7 +60,7 @@ WORKDIR /opt/seafile
 
 RUN mkdir -p /opt/seafile/ && cd /opt/seafile/ && \
     wget -O seafile-pro-server_${SEAFILE_VERSION}_x86-64_Ubuntu.tar.gz \
-    "https://download.seafile.com/d/6e5297246c/files/?p=/pro/seafile-pro-server_${SEAFILE_VERSION}_x86-64_Ubuntu.tar.gz&dl=1" && \
+    "https://download.seafile.top/d/8c29766a64d24122936f/files/?p=/seafile-pro-server_${SEAFILE_VERSION}_x86-64_Ubuntu.tar.gz&dl=1" && \
     tar -zxvf seafile-pro-server_${SEAFILE_VERSION}_x86-64_Ubuntu.tar.gz && \
     rm -f seafile-pro-server_${SEAFILE_VERSION}_x86-64_Ubuntu.tar.gz
 

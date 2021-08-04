@@ -32,7 +32,7 @@ RUN pip3 install --timeout=3600 future mysqlclient Pillow pylibmc captcha jinja2
 
 
 # Scripts
-COPY scripts_7.1 /scripts
+COPY scripts /scripts
 COPY templates /templates
 COPY services /services
 RUN chmod u+x /scripts/*

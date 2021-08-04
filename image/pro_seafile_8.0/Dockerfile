@@ -46,10 +46,11 @@ RUN pip3 install --timeout=3600 boto oss2 pycryptodome twilio python-ldap config
 
 
 # Scripts
-COPY scripts_7.1 /scripts
+COPY scripts /scripts
+COPY cluster_scripts /cluster_scripts
 COPY templates /templates
 COPY services /services
-RUN chmod u+x /scripts/*
+RUN chmod u+x /scripts/* && chmod u+x /cluster_scripts/*
 
 RUN mkdir -p /etc/my_init.d && \
     rm -f /etc/my_init.d/* && \
