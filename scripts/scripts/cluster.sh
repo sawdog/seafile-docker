@@ -5,9 +5,10 @@
 function log() {
     local time=$(date +"%F %T")
     echo "$time $1 "
-    echo "[$time] $1 " &>> /opt/seafile/logs/enterpoint.log
+    echo "[$time] $1 " &>> /opt/seafile/logs/cluster.log
 }
 
+ln -sf /opt/seafile/seafile-pro-server-$SEAFILE_VERSION /opt/seafile/seafile-server-latest
 
 # check nginx
 while [ 1 ]; do
@@ -21,12 +22,8 @@ while [ 1 ]; do
     fi
 done
 
-if [[ ! -L /etc/nginx/sites-enabled/default ]]; then
-    ln -s /opt/seafile/conf/nginx.conf /etc/nginx/sites-enabled/default
-    nginx -s reload
-fi
 
-
+echo
 log "This is a idle script (infinite loop) to keep container running."
 
 function cleanup() {

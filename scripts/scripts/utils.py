@@ -198,7 +198,7 @@ def to_unicode(s):
         return s
 
 def to_utf8(s):
-    if isinstance(s, unicode):
+    if isinstance(s, bytes):
         return s.encode('utf-8')
     else:
         return s
