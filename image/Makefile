@@ -1,15 +1,15 @@
-server_version=7.0.11
+server_version=8.0.7
 
-base_image=seafileltd/base-mc:18.04
-base_image_squashed=seafileltd/base-mc:18.04-squashed
-pro_base_image=seafileltd/pro-base-mc:18.04
-pro_base_image_squashed=seafileltd/pro-base-mc:18.04-squashed
-server_image=seafileltd/seafile-mc:$(server_version)
-server_image_squashed=seafileltd/seafile-mc:$(server_version)-squashed
-pro_server_image=seafileltd/seafile-pro-mc:$(server_version)
-pro_server_image_squashed=seafileltd/seafile-pro-mc:$(server_version)-squashed
-latest_pro_server_image=seafileltd/seafile-pro-mc:latest
-latest_server_image=seafileltd/seafile-mc:latest
+base_image=sawdog/base-mc:18.04
+base_image_squashed=sawdog/base-mc:18.04-squashed
+pro_base_image=sawdog/pro-base-mc:18.04
+pro_base_image_squashed=sawdog/pro-base-mc:18.04-squashed
+server_image=sawdog/seafile-mc:$(server_version)
+server_image_squashed=ssawdog/seafile-mc:$(server_version)-squashed
+pro_server_image=sawdog/seafile-pro-mc:$(server_version)
+pro_server_image_squashed=sawdog/seafile-pro-mc:$(server_version)-squashed
+latest_pro_server_image=sawdog/seafile-pro-mc:latest
+latest_server_image=sawdog/seafile-mc:latest
 
 all:
 	@echo
