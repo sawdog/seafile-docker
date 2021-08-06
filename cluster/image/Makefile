@@ -1,15 +1,15 @@
 server_version=6.3.7
 
-base_image=seafileltd/cluster-base:18.04
-base_image_squashed=seafileltd/cluster-base:18.04-squashed
-pro_base_image=seafileltd/cluster-pro-base:18.04
-pro_base_image_squashed=seafileltd/cluster-pro-base:18.04-squashed
-server_image=seafileltd/seafile:$(server_version)
-server_image_squashed=seafileltd/seafile:$(server_version)-squashed
-pro_server_image=seafileltd/cluster-seafile-pro:$(server_version)
-pro_server_image_squashed=seafileltd/cluster-seafile-pro:$(server_version)-squashed
-latest_pro_server_image=seafileltd/cluster-seafile-pro:latest
-latest_server_image=seafileltd/seafile:latest
+base_image=sawdog/cluster-base:18.04
+base_image_squashed=sawdog/cluster-base:18.04-squashed
+pro_base_image=sawdog/cluster-pro-base:18.04
+pro_base_image_squashed=sawdog/cluster-pro-base:18.04-squashed
+server_image=sawdog/seafile:$(server_version)
+server_image_squashed=sawdog/seafile:$(server_version)-squashed
+pro_server_image=sawdog/cluster-seafile-pro:$(server_version)
+pro_server_image_squashed=sawdog/cluster-seafile-pro:$(server_version)-squashed
+latest_pro_server_image=sawdog/cluster-seafile-pro:latest
+latest_server_image=sawdog/seafile:latest
 
 all:
 	@echo

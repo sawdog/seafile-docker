@@ -55,10 +55,10 @@ Now run the following commands:
 (Note that if you're using another drive than "C:", say "D:", you should change the "c:\\seafile" in the following commands to "d:\\seafile" instead.)
 
 ```sh
-docker pull seafileltd/seafile:6.3.3
-docker run -d --name seafile-server -v /root/seafile:/shared -p 80:80 seafileltd/seafile:6.3.3
+docker pull sawdog/seafile:6.3.3
+docker run -d --name seafile-server -v /root/seafile:/shared -p 80:80 sawdog/seafile:6.3.3
 ```
 
-The tag for the most recent version of the image can be found at https://hub.docker.com/r/seafileltd/seafile/tags/.
+The tag for the most recent version of the image can be found at https://hub.docker.com/r/sawdog/seafile/tags/.
 
 If you are not familiar with docker commands, refer to [docker documentation](https://docs.docker.com/engine/reference/commandline/cli/).

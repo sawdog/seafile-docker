@@ -1,2 +1,2 @@
 all:
-	docker build -t seafileltd/seafile:6.1.0 .
+	docker build -t sawdog/seafile:6.1.0 .

@@ -4,7 +4,7 @@ FROM sawdog/base-mc:18.04
 # when debugging/upgrading.
 
 # Fixing the "Sub-process /usr/bin/dpkg returned an error code (1)", 
-# when RUN apt-get
+# when RUN apt-get 
 RUN mkdir -p /usr/share/man/man1
 
 RUN apt-get update \

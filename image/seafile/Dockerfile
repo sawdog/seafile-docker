@@ -1,4 +1,5 @@
 FROM sawdog/base-mc:18.04
+# so can control the horizontal and improve base
 
 # For suport set local time zone.
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install tzdata -y

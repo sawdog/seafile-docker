@@ -14,28 +14,28 @@ git push origin master
 
 * Normal
 
-    * Create a tag "seafile-base" and push it to github. Wait for travis ci to finish: this time it would push the image seafileltd/base:16.04  to docker hub since it's triggered by a tag.
+    * Create a tag "seafile-base" and push it to github. Wait for travis ci to finish: this time it would push the image sawdog/base:16.04  to docker hub since it's triggered by a tag.
     ```sh
     git tag seafile-base
     git push origin seafile-base
     ```
 
-    * Create a tag "v6.0.7" and push it to github. Wait for travis ci to finish: this time it would push the image seafileltd/seafile:6.0.7 to docker hub since it's triggered by a tag.
+    * Create a tag "v6.0.7" and push it to github. Wait for travis ci to finish: this time it would push the image sawdog/seafile:6.0.7 to docker hub since it's triggered by a tag.
     ```sh
     git tag v6.0.7
     git push origin v6.0.7
     ```
-    * Ensure the new image is available in https://hub.docker.com/r/seafileltd/seafile/tags/
+    * Ensure the new image is available in https://hub.docker.com/r/sawdog/seafile/tags/
 
 * Pro
 
-    * Create a tag "seafile-pro-base" and push it to github. Wait for travis ci to finish: this time it would push the image ${registry}/seafileltd/pro-base:16.04  to docker Registry since it's triggered by a tag.
+    * Create a tag "seafile-pro-base" and push it to github. Wait for travis ci to finish: this time it would push the image ${registry}/sawdog/pro-base:16.04  to docker Registry since it's triggered by a tag.
     ```sh
     git tag seafile-pro-base
     git push origin seafile-pro-base
     ```
     
-    * Create a tag "v6.0.7-pro" and push it to github. Wait for travis ci to finish: this time it would push the image ${registry}/seafileltd/seafile-pro:6.0.7 to docker Registry since it's triggered by a tag.
+    * Create a tag "v6.0.7-pro" and push it to github. Wait for travis ci to finish: this time it would push the image ${registry}/sawdog/seafile-pro:6.0.7 to docker Registry since it's triggered by a tag.
     ```sh
     git tag v6.0.7-pro
     git push origin v6.0.7

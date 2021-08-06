@@ -1,7 +1,14 @@
 [![Build Status](https://secure.travis-ci.org/haiwen/seafile-docker.png?branch=master)](http://travis-ci.org/haiwen/seafile-docker)
 
-### About
+### Why Fer?
 
+Fork of the seafile docker images. I got tired of waiting and waiting with no pro updates and struggled
+with finding any that actually work.  I plan to split things up and it a little cleaner behind traefik and update dependencies as much as possible. 
+
+And there's some fscking dodgy stuff going on with some community member who think it's cool to take open source, put it behind their walled garden with locked up private git repos and ask for crypto currency to support him.
+That right there buuuull.
+
+## About
 - [Docker](https://docker.com/) is an open source project to pack, ship and run any Linux application in a lighter weight, faster container than a traditional virtual machine.
 
 - Docker makes it much easier to deploy [a Seafile server](https://github.com/haiwen/seafile) on your servers and keep it updated.
@@ -27,7 +34,7 @@ docker run -d --name seafile \
   -e SEAFILE_SERVER_HOSTNAME=seafile.example.com \
   -v /opt/seafile-data:/shared \
   -p 80:80 \
-  {pro-host}/seafileltd/seafile-pro:latest
+  {pro-host}/sawdog/seafile-pro:latest
 ```
 
 Wait for a few minutes for the first time initialization, then visit `http://seafile.example.com` to open Seafile Web UI.
@@ -63,7 +70,7 @@ docker run -d --name seafile \
   -e SEAFILE_ADMIN_PASSWORD=a_very_secret_password \
   -v /opt/seafile-data:/shared \
   -p 80:80 \
-  {pro-host}/seafileltd/seafile-pro:latest
+  {pro-host}/sawdog/seafile-pro:latest
 ```
 
 If you forget the admin password, you can add a new admin account and then go to the sysadmin panel to reset user password.
@@ -83,7 +90,7 @@ docker run -d --name seafile \
   -v /opt/seafile-data:/shared \
   -p 80:80 \
   -p 443:443 \
-  {pro-host}/seafileltd/seafile-pro:latest
+  {pro-host}/sawdog/seafile-pro:latest
 ```
 
 If you want to use your own SSL certificate:
@@ -134,7 +141,7 @@ Placeholder spot for shared volumes. You may elect to store certain persistent i
 TO upgrade to latest version of seafile server:
 
 ```sh
-docker pull {pro-host}/seafileltd/seafile-pro:latest
+docker pull {pro-host}/sawdog/seafile-pro:latest
 docker rm -f seafile
 docker run -d --name seafile \
   -e SEAFILE_SERVER_LETSENCRYPT=true \
@@ -144,7 +151,7 @@ docker run -d --name seafile \
   -v /opt/seafile-data:/shared \
   -p 80:80 \
   -p 443:443 \
-  {pro-host}/seafileltd/seafile-pro:latest
+  {pro-host}/sawdog/seafile-pro:latest
 ```
 
 If you are one of the early users who use the `launcher` script, you should refer to [upgrade from old format](https://github.com/haiwen/seafile-docker/blob/master/upgrade_from_old_format.md) document.

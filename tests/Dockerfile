@@ -1,4 +1,4 @@
-FROM seafileltd/seafile:6.2.5
+FROM sawdog/seafile:6.2.5
 
 ENV SEAFILE_VERSION=6.1.0
 
