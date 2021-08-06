@@ -1,4 +1,4 @@
-FROM sawdog/pro-base-mc:18.04
+FROM sawdog/pro-base-mc:20.04
 WORKDIR /opt/seafile
 
 ENV SEAFILE_VERSION=8.0.7 SEAFILE_SERVER=seafile-pro-server
