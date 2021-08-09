@@ -1,7 +1,7 @@
 # coding: UTF-8
 
 from __future__ import print_function
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 from contextlib import contextmanager
 import os
 import datetime
@@ -270,7 +270,7 @@ def wait_for_mysql():
         try:
 	    MySQLdb.connect(host=db_host, port=3306, user=db_user, passwd=db_passwd)
 	except Exception as e:
-	    print ('waiting for mysql server to be ready: %s', e)
+	    print('waiting for mysql server to be ready: %s', e)
 	    time.sleep(2)
 	    continue
 	logdbg('mysql server is ready')

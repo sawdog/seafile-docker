@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #coding: UTF-8
 
 """
@@ -36,7 +36,7 @@ def watch_controller():
         else:
             retry = 0
         time.sleep(5)
-    print 'seafile controller exited unexpectedly.'
+    print('seafile controller exited unexpectedly.')
     sys.exit(1)
 
 def main():
@@ -68,11 +68,11 @@ def main():
         if exists(password_file):
             os.unlink(password_file)
 
-    print 'seafile server is running now.'
+    print('seafile server is running now.')
     try:
         watch_controller()
     except KeyboardInterrupt:
-        print 'Stopping seafile server.'
+        print('Stopping seafile server.')
         sys.exit(0)
 
 if __name__ == '__main__':

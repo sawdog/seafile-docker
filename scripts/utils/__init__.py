@@ -5,8 +5,7 @@ from configparser import ConfigParser
 from contextlib import contextmanager
 import os
 import datetime
-from os.path import abspath, basename, exists, dirname, join, isdir, expanduser
-import platform
+from os.path import basename, exists, dirname, join, expanduser
 import sys
 import subprocess
 import time
@@ -268,11 +267,11 @@ def wait_for_mysql():
 
     while True:
         try:
-	    MySQLdb.connect(host=db_host, port=3306, user=db_user, passwd=db_passwd)
-	except Exception as e:
-	    print('waiting for mysql server to be ready: %s', e)
-	    time.sleep(2)
-	    continue
+            MySQLdb.connect(host=db_host, port=3306, user=db_user, passwd=db_passwd)
+        except Exception as e:
+            print('waiting for mysql server to be ready: %s', e)
+	        time.sleep(2)
+	        continue
 	logdbg('mysql server is ready')
 	return
 
