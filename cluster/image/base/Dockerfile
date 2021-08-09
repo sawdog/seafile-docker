@@ -15,14 +15,11 @@ RUN apt-get install -qq -y vim htop net-tools psmisc git wget curl
 # Guidline for installing python libs: if a lib has C-compoment (e.g.
 # python-imaging depends on libjpeg/libpng), we install it use apt-get.
 # Otherwise we install it with pip.
-RUN apt-get install -y python2.7-dev python-ldap python-mysqldb libmemcached-dev zlib1g-dev gcc
-RUN curl -sSL -o /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
-    python /tmp/get-pip.py && \
-    rm -rf /tmp/get-pip.py && \
-    pip install -U wheel
+RUN apt-get install -y python3.7-dev python3-ldap python3-mysqldb libmemcached-dev zlib1g-dev gcc python3-pip
+RUN pip3 install -U wheel
 
 ADD requirements.txt  /tmp/requirements.txt
-RUN pip install -r /tmp/requirements.txt
+RUN pip3 install -r /tmp/requirements.txt
 
 COPY services /services
 

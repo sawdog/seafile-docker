@@ -1,4 +1,4 @@
-FROM sawdog/cluster-base:18.04
+FROM sawdog/cluster-base:20.04
 
 # syslog-ng and syslog-forwarder would mess up the container stdout, not good
 # when debugging/upgrading.
@@ -9,14 +9,13 @@ RUN mkdir -p /usr/share/man/man1
 
 RUN apt update
 
-RUN apt-get install -y openjdk-8-jre libmemcached-dev zlib1g-dev pwgen curl openssl poppler-utils libpython2.7 libreoffice \
-libreoffice-script-provider-python ttf-wqy-microhei ttf-wqy-zenhei xfonts-wqy python-requests mysql-client
-
-RUN apt-get install -y tzdata python-pip python-setuptools python-urllib3 python-ldap python-ceph
+RUN apt-get install -y openjdk-8-jre libmemcached-dev zlib1g-dev pwgen curl openssl poppler-utils libreoffice \
+libreoffice-script-provider-python ttf-wqy-microhei ttf-wqy-zenhei xfonts-wqy python3-requests mysql-client\
+tzdata python3-pip python3-setuptools python3-urllib3 python3-ldap python3-ceph
 
 # The S3 storage, oss storage and psd online preview etc, 
 # depends on the python-backages as follow:
-RUN pip install boto==2.43.0 \ 
+RUN pip3 install boto==2.43.0 \ 
     oss2==2.3.0 \ 
     psd-tools==1.4 \ 
     pycryptodome==3.7.2 \ 

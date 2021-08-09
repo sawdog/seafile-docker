@@ -16,7 +16,7 @@ Starting with 7.0, we have adjusted seafile-docker image to use multiple contain
 
 If you plan to deploy seafile 7.0, you should refer to the [Deploy Documentation](https://download.seafile.com/published/seafile-manual/docker/deploy%20seafile%20with%20docker.md).
 
-If you plan to upgrade 6.3 to 7.0, you can refer to the [Upgrade Documentation](https://download.seafile.com/published/seafile-manual/docker/6.3%20upgrade%20to%207.0.md).
+If you plan to upgrade 6.3 to 7.0, you can refer to the [Upgrade Documentation](https://download.seafile.com/published/seafile-manual/docker/6.3%20upgrade%20to%20.0.md).
 
 ## For seafile 6.x.x
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 #coding: UTF-8
 
 """
@@ -50,7 +50,7 @@ def init_letsencrypt():
         loginfo('Found existing cert file {}'.format(ssl_crt))
         if cert_has_valid_days(ssl_crt, 30):
             loginfo('Skip letsencrypt verification since we have a valid certificate')
-            if exists(join(ssl_dir, 'letsencrypt')):
+	    if exists(join(ssl_dir, 'letsencrypt')):
                 # Create a crontab to auto renew the cert for letsencrypt.
                 call('/scripts/auto_renew_crt.sh {0} {1}'.format(ssl_dir, domain))
             return
@@ -125,7 +125,7 @@ def init_seafile_server():
         'MYSQL_USER': 'seafile',
         'MYSQL_USER_PASSWD': str(uuid.uuid4()),
         'MYSQL_USER_HOST': '%.%.%.%',
-        'MYSQL_HOST': get_conf('DB_HOST','127.0.0.1'),
+	'MYSQL_HOST': get_conf('DB_HOST','127.0.0.1'),
         # Default MariaDB root user has empty password and can only connect from localhost.
         'MYSQL_ROOT_PASSWD': get_conf('DB_ROOT_PASSWD', ''),
     }
@@ -186,36 +186,8 @@ COMPRESS_CACHE_BACKEND = 'locmem'""")
                insert_lines = ['es_port = 9200\n', 'es_host = elasticsearch\n', 'external_es_server = true\n']
                for line in insert_lines:
                    fp_lines.insert(insert_index, line)
-
-            # office
-            if '[OFFICE CONVERTER]\n' in fp_lines:
-               insert_index = fp_lines.index('[OFFICE CONVERTER]\n') + 1
-               insert_lines = ['host = 127.0.0.1\n', 'port = 6000\n']
-               for line in insert_lines:
-                   fp_lines.insert(insert_index, line)
-
+    
         with open(join(topdir, 'conf', 'seafevents.conf'), 'w') as fp:
-            fp.writelines(fp_lines)
-
-        # office
-        with open(join(topdir, 'conf', 'seahub_settings.py'), 'r') as fp:
-            fp_lines = fp.readlines()
-            if "OFFICE_CONVERTOR_ROOT = 'http://127.0.0.1:6000/'\n" not in fp_lines:
-                fp_lines.append("OFFICE_CONVERTOR_ROOT = 'http://127.0.0.1:6000/'\n")
-
-        with open(join(topdir, 'conf', 'seahub_settings.py'), 'w') as fp:
-            fp.writelines(fp_lines)
-
-    # Modify seafdav config
-    if os.path.exists(join(topdir, 'conf', 'seafdav.conf')):
-        with open(join(topdir, 'conf', 'seafdav.conf'), 'r') as fp:
-            fp_lines = fp.readlines()
-            if 'share_name = /\n' in fp_lines:
-               replace_index = fp_lines.index('share_name = /\n')
-               replace_line = 'share_name = /seafdav\n'
-               fp_lines[replace_index] = replace_line
-
-        with open(join(topdir, 'conf', 'seafdav.conf'), 'w') as fp:
             fp.writelines(fp_lines)
 
     # After the setup script creates all the files inside the

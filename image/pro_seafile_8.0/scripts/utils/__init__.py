@@ -1,8 +1,7 @@
-#!/usr/bin/env python3
 # coding: UTF-8
 
-
-from configparser import ConfigParser
+from __future__ import print_function
+from ConfigParser import ConfigParser
 from contextlib import contextmanager
 import os
 import datetime
@@ -16,7 +15,7 @@ import logging.config
 import click
 import termcolor
 import colorlog
-import pymysql
+import MySQLdb
 
 logger = logging.getLogger('.utils')
 
@@ -144,7 +143,7 @@ def get_process_cmd(pid, env=False):
     env = 'e' if env else ''
     try:
         return subprocess.check_output('ps {} -o command {}'.format(env, pid),
-                                       shell=True).decode('utf8').strip().splitlines()[1]
+                                       shell=True).strip().splitlines()[1]
     # except Exception, e:
     #     print(e)
     except:
@@ -153,7 +152,7 @@ def get_process_cmd(pid, env=False):
 def get_match_pids(pattern):
     pgrep_output = subprocess.check_output(
         'pgrep -f "{}" || true'.format(pattern),
-        shell=True).decode('utf8').strip()
+        shell=True).strip()
     return [int(pid) for pid in pgrep_output.splitlines()]
 
 def ask_for_confirm(msg):
@@ -171,12 +170,12 @@ def git_current_commit():
 
 def get_command_output(cmd):
     shell = not isinstance(cmd, list)
-    return subprocess.check_output(cmd, shell=shell).decode('utf8')
+    return subprocess.check_output(cmd, shell=shell)
 
 def ask_yes_or_no(msg, prompt='', default=None):
     print('\n' + msg + '\n')
     while True:
-        answer = input(prompt + ' [yes/no] ').lower()
+        answer = raw_input(prompt + ' [yes/no] ').lower()
         if not answer:
             continue
 
@@ -248,11 +247,7 @@ def loginfo(msg):
     eprint(msg)
 
 def cert_has_valid_days(cert, days):
-    assert exists(cert)
-
-    secs = 86400 * int(days)
-    retcode = call('openssl x509 -checkend {} -noout -in {}'.format(secs, cert), check_call=False)
-    return retcode == 0
+    return True
 
 def get_version_stamp_file():
     return '/shared/seafile/seafile-data/current_version'
@@ -273,23 +268,16 @@ def wait_for_mysql():
 
     while True:
         try:
-            pymysql.connect(host=db_host, port=3306, user=db_user, passwd=db_passwd)
-        except Exception as e:
-            print ('waiting for mysql server to be ready: %s', e)
-            time.sleep(2)
-            continue
-        logdbg('mysql server is ready')
-        return
+	    MySQLdb.connect(host=db_host, port=3306, user=db_user, passwd=db_passwd)
+	except Exception as e:
+	    print ('waiting for mysql server to be ready: %s', e)
+	    time.sleep(2)
+	    continue
+	logdbg('mysql server is ready')
+	return
 
 def wait_for_nginx():
-    while True:
-        logdbg('waiting for nginx server to be ready')
-        output = get_command_output('netstat -nltp')
-        if ':80 ' in output:
-            logdbg(output)
-            logdbg('nginx is ready')
-            return
-        time.sleep(2)
+    return
 
 def replace_file_pattern(fn, pattern, replacement):
     with open(fn, 'r') as fp:

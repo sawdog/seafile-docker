@@ -4,13 +4,31 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
-click==6.6
-colorlog==2.7.0
-Jinja2==2.8
-MarkupSafe==0.23          # via jinja2
-prettytable==0.7.2
-termcolor==1.1.0
+
+# Required by seafile/seahub
+python-memcached==1.58
 urllib3==1.26.5
-Pillow==4.3.0
-pylibmc==1.6.0
-django-pylibmc==0.6.1
+boto
+captcha
+click
+colorlog
+configparser
+django==2.2.*
+django-pylibmc
+django-simple-captcha
+future
+MarkupSafe
+jinja2 
+mysqlclient
+oss2
+Pillow
+pycryptodome
+pyjwt
+pylibmc
+pymysql
+python-ldap
+sqlalchemy 
+termcolor 
+twilio
+prettytable==0.7.2
+

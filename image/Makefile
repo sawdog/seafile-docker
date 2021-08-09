@@ -1,15 +1,10 @@
-server_version=8.0.7
+server_version=8.0.8
 
-base_image=sawdog/base-mc:18.04
-base_image_squashed=sawdog/base-mc:18.04-squashed
-pro_base_image=sawdog/pro-base-mc:18.04
-pro_base_image_squashed=sawdog/pro-base-mc:18.04-squashed
-server_image=sawdog/seafile-mc:$(server_version)
-server_image_squashed=ssawdog/seafile-mc:$(server_version)-squashed
-pro_server_image=sawdog/seafile-pro-mc:$(server_version)
-pro_server_image_squashed=sawdog/seafile-pro-mc:$(server_version)-squashed
-latest_pro_server_image=sawdog/seafile-pro-mc:latest
-latest_server_image=sawdog/seafile-mc:latest
+base_image=sawdog/seafile-pro-base-server-image:1.0.0
+base_image_squashed=sawdog/seafile-pro-base-server-image:1.0.0-squashed
+server_image=sawdog/seafile-pro:$(server_version)
+server_image_squashed=sawdog/seafile-pro:$(server_version)-squashed
+latest_server_image=sawdog/seafile-pro:latest
 
 all:
 	@echo
@@ -26,37 +21,17 @@ base:
 	docker rmi `docker images --filter "dangling=true" -q --no-trunc`
 
 server:
-	cd seafile && cp -rf ../../scripts ./ && docker build -t $(server_image) .
+	cd pro_seafile && cp -rf ../../scripts ./ && docker build -t $(server_image) .
 	docker-squash --tag $(server_image_squashed) $(server_image) --from-layer=$(base_image)
 	docker tag $(server_image_squashed) $(server_image)
 	docker tag $(server_image) $(latest_server_image)
 	docker rmi `docker images --filter "dangling=true" -q --no-trunc`
 
-pro-base:
-	cd pro_base && docker build -t $(pro_base_image) .
-	docker-squash --tag $(pro_base_image_squashed) $(pro_base_image)
-	docker tag $(pro_base_image_squashed) $(pro_base_image)
-	docker rmi `docker images --filter "dangling=true" -q --no-trunc`
-
-pro-server:
-	cd pro_seafile && cp -rf ../../scripts ./ && docker build -t $(pro_server_image) .
-	docker-squash --tag $(pro_server_image_squashed) $(pro_server_image) --from-layer=$(pro_base_image)
-	docker tag $(pro_server_image_squashed) $(pro_server_image)
-	docker tag $(pro_server_image) $(latest_pro_server_image)
-	docker rmi `docker images --filter "dangling=true" -q --no-trunc`
-
 push-base:
-	docker push $(base_image)
-
-push-pro-base:
-	docker tag $(pro_base_image) ${host}/$(pro_base_image)
-	docker push ${host}/$(pro_base_image)
+	docker tag $(base_image) sawdog/$(base_image)
+	docker push sawdog/$(base_image)
 
 push-server:
-	docker push $(server_image)
-	docker push $(latest_server_image)
-
-push-pro-server:
 	docker tag $(pro_server_image) ${host}/$(pro_server_image)
 	docker tag $(pro_server_image) ${host}/$(latest_pro_server_image)
 	docker push ${host}/$(pro_server_image)

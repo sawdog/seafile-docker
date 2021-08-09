@@ -2,36 +2,41 @@
 # See https://hub.docker.com/r/phusion/baseimage/tags/
 FROM phusion/baseimage:0.11
 
-ENV UPDATED_AT=20180412 \
-    DEBIAN_FRONTEND=noninteractive
+RUN export DEBIAN_FRONTEND=noninteractive && \
+    apt-get update --fix-missing && apt-get install -y \
+    curl \
+    git \
+    htop \
+    libmysqlclient-dev \
+    libmemcached11 \
+    libmemcached-dev \
+    libreoffice \
+    libreoffice-script-provider-python \
+    libsm-dev \
+    net-tools \
+    openjdk-8-jre \
+    openssl \
+    poppler-utils \
+    psmisc \
+    python3 \
+    python3-ldap \
+    python3-mysqldb \
+    python3-pip \
+    python3-rados \
+    python3-setuptools \
+    pwgen \
+    tzdata \
+    vim \
+    wget \
+    zlib1g-dev 
 
-CMD ["/sbin/my_init", "--", "bash", "-l"]
-
-RUN apt-get update -qq && apt-get -qq -y install nginx
-
-# Utility tools
-RUN apt-get install -qq -y vim htop net-tools psmisc git wget curl
-
-# Guidline for installing python libs: if a lib has C-compoment (e.g.
-# python-imaging depends on libjpeg/libpng), we install it use apt-get.
-# Otherwise we install it with pip.
-RUN apt-get install -y python2.7-dev python-ldap python-mysqldb zlib1g-dev libmemcached-dev gcc
-RUN curl -sSL -o /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
-    python /tmp/get-pip.py && \
-    rm -rf /tmp/get-pip.py && \
-    pip install -U wheel
+RUN python3 -m pip install --upgrade pip && \
+    rm -rf /root/.cache/pip
 
 ADD requirements.txt  /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
 
-COPY services /services
-
-RUN mkdir -p /etc/service/nginx && \
-    rm -f /etc/nginx/sites-enabled/* /etc/nginx/conf.d/* && \
-    mv /services/nginx.conf /etc/nginx/nginx.conf && \
-    mv /services/nginx.sh /etc/service/nginx/run
-
-RUN mkdir -p /etc/my_init.d && rm -f /etc/my_init.d/00_regen_ssh_host_keys.sh
+RUN mkdir -p /opt/seafile/ && mkdir -p /etc/my_init.d && rm -f /etc/my_init.d/00_regen_ssh_host_keys.sh
 
 RUN rm -rf \
     /root/.cache \

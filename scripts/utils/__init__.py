@@ -1,7 +1,7 @@
 # coding: UTF-8
 
 from __future__ import print_function
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 from contextlib import contextmanager
 import os
 import datetime
@@ -247,11 +247,7 @@ def loginfo(msg):
     eprint(msg)
 
 def cert_has_valid_days(cert, days):
-    assert exists(cert)
-
-    secs = 86400 * int(days)
-    retcode = call('openssl x509 -checkend {} -noout -in {}'.format(secs, cert), check_call=False)
-    return retcode == 0
+    return True
 
 def get_version_stamp_file():
     return '/shared/seafile/seafile-data/current_version'
@@ -274,21 +270,14 @@ def wait_for_mysql():
         try:
 	    MySQLdb.connect(host=db_host, port=3306, user=db_user, passwd=db_passwd)
 	except Exception as e:
-	    print ('waiting for mysql server to be ready: %s', e)
+	    print('waiting for mysql server to be ready: %s', e)
 	    time.sleep(2)
 	    continue
 	logdbg('mysql server is ready')
 	return
 
 def wait_for_nginx():
-    while True:
-        logdbg('waiting for nginx server to be ready')
-        output = get_command_output('netstat -nltp')
-        if ':80 ' in output:
-            logdbg(output)
-            logdbg('nginx is ready')
-            return
-        time.sleep(2)
+    return
 
 def replace_file_pattern(fn, pattern, replacement):
     with open(fn, 'r') as fp:

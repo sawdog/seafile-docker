@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 #coding: UTF-8
 
 """
@@ -14,7 +14,6 @@ from os.path import abspath, basename, exists, dirname, join, isdir, islink
 import shutil
 import sys
 import time
-import configparser
 
 from utils import (
     call, get_install_dir, get_script, get_command_output, replace_file_pattern,
@@ -88,80 +87,8 @@ def fix_custom_dir():
     if not exists(real_custom_dir):
         os.mkdir(real_custom_dir)
 
-def fix_ccent_conf():
-    ccnet_conf_path = '/shared/seafile/conf/ccnet.conf'
-    if exists(ccnet_conf_path):
-        cp = configparser.ConfigParser({})
-        try:
-            cp.read(ccnet_conf_path)
-        except configparser.DuplicateSectionError as e:
-            with open(ccnet_conf_path, 'r+') as fp:
-                content_list = fp.readlines()
-                aim = '[Client]\n'
-                count = content_list.count(aim)
-                if count > 1:
-                    new_content_list = list()
-                    client_port_index = -1
-                    for index, text in enumerate(content_list):
-                        if text == aim and 'PORT = ' in content_list[index + 1]:
-                            client_port_index = index + 1
-                            continue
-                        if index == client_port_index:
-                            client_port_index = -1
-                            continue
-                        new_content_list.append(text)
-
-                    new_content = ''.join(new_content_list)
-                    fp.seek(0)
-                    fp.truncate() 
-                    fp.write(new_content)
-                    print('\n------------------------------')
-                    print('Fix ccnet conf success')
-                    print('------------------------------\n')
-
-def fix_seafevents_conf():
-    seafevents_conf_path = '/shared/seafile/conf/seafevents.conf'
-    seahub_conf_path = '/shared/seafile/conf/seahub_settings.py'
-    pro_data_dir = '/shared/seafile/pro-data/'
-    if exists(seafevents_conf_path):
-        os.makedirs(pro_data_dir, exist_ok=True)
-
-        with open(seafevents_conf_path, 'r') as fp:
-            fp_lines = fp.readlines()
-            if 'port = 6000\n' in fp_lines:
-                return
-
-            if '[INDEX FILES]\n' in fp_lines and 'external_es_server = true\n' not in fp_lines:
-               insert_index = fp_lines.index('[INDEX FILES]\n') + 1
-               insert_lines = ['es_port = 9200\n', 'es_host = elasticsearch\n', 'external_es_server = true\n']
-               for line in insert_lines:
-                   fp_lines.insert(insert_index, line)
-
-            if '[OFFICE CONVERTER]\n' in fp_lines and 'port = 6000\n' not in fp_lines:
-               insert_index = fp_lines.index('[OFFICE CONVERTER]\n') + 1
-               insert_lines = ['host = 127.0.0.1\n', 'port = 6000\n']
-               for line in insert_lines:
-                   fp_lines.insert(insert_index, line)
-
-        with open(seafevents_conf_path, 'w') as fp:
-            fp.writelines(fp_lines)
-
-        with open(seahub_conf_path, 'r') as fp:
-            fp_lines = fp.readlines()
-            if "OFFICE_CONVERTOR_ROOT = 'http://127.0.0.1:6000/'\n" not in fp_lines:
-                fp_lines.append("OFFICE_CONVERTOR_ROOT = 'http://127.0.0.1:6000/'\n")
-
-        with open(seahub_conf_path, 'w') as fp:
-            fp.writelines(fp_lines)
-        print('\n------------------------------')
-        print('Fix seafevents conf success')
-        print('------------------------------\n')
-
 def check_upgrade():
     fix_custom_dir()
-    fix_ccent_conf()
-    fix_seafevents_conf()
-
     last_version = read_version_stamp()
     current_version = os.environ['SEAFILE_VERSION']
 

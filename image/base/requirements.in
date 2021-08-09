@@ -3,10 +3,25 @@
 # Required by seafile/seahub
 python-memcached==1.58
 urllib3==1.26.5
-
-# Utility libraries
-click==6.6
-termcolor==1.1.0
+boto
+captcha
+click
+colorlog
+configparser
+django==2.2.*
+django-pylibmc
+django-simple-captcha
+future
+jinja2 
+mysqlclient
+oss2
+Pillow
+pycryptodome
+pyjwt
+pylibmc
+pymysql
+python-ldap
+sqlalchemy 
+termcolor 
+twilio
 prettytable==0.7.2
-colorlog==2.7.0
-Jinja2==2.8

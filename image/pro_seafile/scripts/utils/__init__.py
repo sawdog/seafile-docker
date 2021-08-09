@@ -247,11 +247,7 @@ def loginfo(msg):
     eprint(msg)
 
 def cert_has_valid_days(cert, days):
-    assert exists(cert)
-
-    secs = 86400 * int(days)
-    retcode = call('openssl x509 -checkend {} -noout -in {}'.format(secs, cert), check_call=False)
-    return retcode == 0
+    return True
 
 def get_version_stamp_file():
     return '/shared/seafile/seafile-data/current_version'
@@ -281,14 +277,7 @@ def wait_for_mysql():
 	return
 
 def wait_for_nginx():
-    while True:
-        logdbg('waiting for nginx server to be ready')
-        output = get_command_output('netstat -nltp')
-        if ':80 ' in output:
-            logdbg(output)
-            logdbg('nginx is ready')
-            return
-        time.sleep(2)
+    return
 
 def replace_file_pattern(fn, pattern, replacement):
     with open(fn, 'r') as fp:
