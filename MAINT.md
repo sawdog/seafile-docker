@@ -1,5 +1,7 @@
 ## For Project Maintainer: How to update seafile-docker when a new version is released
 
+XXX - This is not updated, it's going to be drastically more simple.
+
 Imagine the previous version is 6.0.5 and we have released 6.0.7. Here are the steps to do the upgrade.
 
 * Switch to a branch "master"
