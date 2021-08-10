@@ -9,7 +9,6 @@ from os.path import basename, exists, dirname, join, expanduser
 import sys
 import subprocess
 import time
-from types import UnicodeType
 import logging
 import logging.config
 import click
@@ -197,7 +196,7 @@ def to_unicode(s):
         return s
 
 def to_utf8(s):
-    if isinstance(s, UnicodeType):
+    if isinstance(s, str):
         return s.encode('utf-8')
     else:
         return s
