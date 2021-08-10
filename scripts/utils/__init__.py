@@ -9,6 +9,7 @@ from os.path import basename, exists, dirname, join, expanduser
 import sys
 import subprocess
 import time
+from types import UnicodeType
 import logging
 import logging.config
 import click
@@ -17,8 +18,8 @@ import colorlog
 import MySQLdb
 
 logger = logging.getLogger('.utils')
-
 DEBUG_ENABLED = os.environ.get('SEAFILE_DOCKER_VERBOSE', '').lower() in ('true', '1', 'yes')
+
 
 def eprint(*a, **kw):
     kw['file'] = sys.stderr
@@ -174,7 +175,7 @@ def get_command_output(cmd):
 def ask_yes_or_no(msg, prompt='', default=None):
     print('\n' + msg + '\n')
     while True:
-        answer = raw_input(prompt + ' [yes/no] ').lower()
+        answer = input(prompt + ' [yes/no] ').lower()
         if not answer:
             continue
 
@@ -196,7 +197,7 @@ def to_unicode(s):
         return s
 
 def to_utf8(s):
-    if isinstance(s, unicode):
+    if isinstance(s, UnicodeType):
         return s.encode('utf-8')
     else:
         return s
@@ -270,10 +271,10 @@ def wait_for_mysql():
             MySQLdb.connect(host=db_host, port=3306, user=db_user, passwd=db_passwd)
         except Exception as e:
             print('waiting for mysql server to be ready: %s', e)
-	        time.sleep(2)
-	        continue
-	logdbg('mysql server is ready')
-	return
+            time.sleep(2)
+            continue
+        logdbg('mysql server is ready')
+        return
 
 def wait_for_nginx():
     return
