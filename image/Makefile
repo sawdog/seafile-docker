@@ -26,6 +26,7 @@ server:
 	docker tag $(server_image_squashed) $(server_image)
 	docker tag $(server_image) $(latest_server_image)
 	docker rmi `docker images --filter "dangling=true" -q --no-trunc`
+	rm -rf ./scripts
 
 push-base:
 	docker tag $(base_image) sawdog/$(base_image)
