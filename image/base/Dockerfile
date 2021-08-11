@@ -21,8 +21,14 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     python3-mysqldb \
     python3-pip \
     python3-rados \
-    RUN python3 -m pip install --upgrade pip && \
-    rm -rf /root/.cache/pip
+    python3-setuptools \
+    pwgen \
+    sqlite3 \
+    tzdata \
+    vim \
+    wget \
+    zlib1g-dev
+
 
 ADD requirements.txt  /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
