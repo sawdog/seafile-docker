@@ -1,12 +1,48 @@
 [![Build Status](https://secure.travis-ci.org/haiwen/seafile-docker.png?branch=master)](http://travis-ci.org/haiwen/seafile-docker)
 
-### Why Fer?
+## Why Fork It?
 
-Fork of the seafile docker images. I got tired of waiting and waiting with no pro updates and struggled
-with finding any that actually work.  I plan to split things up and it a little cleaner behind traefik and update dependencies as much as possible. 
+I forked this for a few reasons. Firstly, I got tired of waiting and waiting with no pro updates.  When asking about them on the forums, nothing.  Rafio silence. Then I found a few docker images out there -- one is dodgy as fsck and he's asking for support. But his repacking of an open source project which he tries to get money from is.... closed.  No thanks.
 
-And there's some fscking dodgy stuff going on with some community member who think it's cool to take open source, put it behind their walled garden with locked up private git repos and ask for crypto currency to support him.
-That right there buuuull.
+Finally, This works.  I am using it.  
+ 
+
+### How to use with Seafile Pro 7.x
+Note: I started with a fresh docker container based of this docker imagbes.  If you want to use your current container, you may just have to deal with symlink in 1 case.  Try it and let me know.
+
+
+### Existing DB w/ New Host Container
+1. Run 7.x to 8.x upgrade script (i did this within my existing 7.1.17 container)
+2. Turn off existing seafile-pro 7 container.
+3. Clear old containers from locakl repo (be aware if you're pesisting changes
+ in the container, they will be lost.  Don't persist anything in these containers is my recommendation.)
+4. Start new container from the new seafile-pro 8.x images.
+5. Connect to your new container (you want a bash shell).
+6. Run seafile-server-latest/setup-seafile.sh
+
+To Support a single container and reuse of existing NGINX / Proxy these steps are required so that the Nginx container has access to the necessary media files.
+1. Stay in container or get a bash shell in the container.
+2. Move mv seafile-server-latest/seahub/media /shared/seafile
+8. To make things consistent, symlink to /opt/seafile along with the other 
+packages that you see there.  cd /opt/seafile; ln -s /shared/seafile/media .
+9. Symlink media from shared back into the pseahub package. 
+  cd seafile-server-latest/seahub; ln -s /opt/seafile/media .
+10. Fix symlinks from this mess in media rm media/avatars; rm media/custom;
+cd media; ln -s ../seahub-data/avatars .; ln -s ../seahub-data/custom .
+
+This is the most right I could figure out; it follows existing patterns and
+works in and out of the container. I then mount this media directory 
+on my Nginx proxy which also handles proxy responsibility for a dozen other containers as well.
+
+
+After the static files are mountable for your proxy, restart that and you  should be running a new, clean 8.x pro instance against your existing database and filestorage.
+
+### Todo
+It's still a bit messy, the scrips are over engineered for what's needed -- and then trying to trace it through is a pita.  For how this works. so they do one job, and that's simple and consistent.
+
+Moving forward I plan to move proxy on to Traefik. I expect it to be as ore more simple to use as a proxy - but my goal is that whatever proxy container or mechanism will *just work*.
+
+All of this should be simplified and moved into the container ]seafile container via the Dockerfile, which I plan to do. The above steps should be moot and the task will be -- mount a new volume to your proxy!
 
 ## About
 - [Docker](https://docker.com/) is an open source project to pack, ship and run any Linux application in a lighter weight, faster container than a traditional virtual machine.
