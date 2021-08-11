@@ -1,6 +1,4 @@
-# Lastet phusion baseimage as of 20180412, based on ubuntu 18.04
-# See https://hub.docker.com/r/phusion/baseimage/tags/
-FROM phusion/baseimage:0.11
+FROM phusion/baseimage:focal-1.0.0
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get update --fix-missing && apt-get install -y \
@@ -8,11 +6,11 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     git \
     htop \
     libmysqlclient-dev \
-    libmemcached11 \
     libmemcached-dev \
     libreoffice \
     libreoffice-script-provider-python \
     libsm-dev \
+    memcached \
     net-tools \
     openjdk-8-jre \
     openssl \
@@ -30,6 +28,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     vim \
     wget \
     zlib1g-dev 
+
 
 RUN python3 -m pip install --upgrade pip && \
     rm -rf /root/.cache/pip

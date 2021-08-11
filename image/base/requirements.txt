@@ -6,18 +6,19 @@
 #
 
 # Required by seafile/seahub
-python-memcached==1.58
+python-memcached
 urllib3==1.26.5
 boto
 captcha
 click
 colorlog
 configparser
-django==2.2.*
+django==2.2.* 
 django-pylibmc
 django-simple-captcha
 future
 MarkupSafe
+mysqlclient
 jinja2 
 mysqlclient
 oss2

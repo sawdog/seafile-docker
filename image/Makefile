@@ -12,21 +12,26 @@ all:
 	@echo
 
 base:
-	docker pull phusion/baseimage:0.11
-	docker-squash --tag phusion/baseimage:latest phusion/baseimage:0.11
-	docker tag phusion/baseimage:latest phusion/baseimage:0.11
+	docker pull phusion/focal-1.0.0
+	docker-squash --tag phusion/focal:latest phusion/focal-1.0.0
+	docker tag phusion/focal:latest phusion/focal-1.0.0
 	cd base && docker build -t $(base_image) .
-	docker-squas --tag $(base_image_squashed) $(base_image)
+	docker-squash --tag $(base_image_squashed) $(base_image)
 	docker tag $(base_image_squashed) $(base_image)
 	docker rmi `docker images --filter "dangling=true" -q --no-trunc`
 
-server:
+squash-server:
 	cd pro_seafile && cp -rf ../../scripts ./ && docker build -t $(server_image) .
 	rm -rf ./scripts
 	docker-squash --tag $(server_image_squashed) $(server_image) --from-layer=$(base_image)
 	docker tag $(server_image_squashed) $(server_image)
 	docker tag $(server_image) $(latest_server_image)
 	docker rmi `docker images --filter "dangling=true" -q --no-trunc`
+
+server:
+	cd pro_seafile && cp -rf ../../scripts ./ && docker build -t $(server_image) .
+	rm -rf ./scripts
+	docker tag $(server_image) $(latest_server_image)
 
 push-base:
 	docker tag $(base_image) sawdog/$(base_image)
