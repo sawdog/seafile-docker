@@ -12,9 +12,9 @@ all:
 	@echo
 
 base:
-	docker pull phusion/focal-1.0.0
-	docker-squash --tag phusion/focal:latest phusion/focal-1.0.0
-	docker tag phusion/focal:latest phusion/focal-1.0.0
+	docker pull phusion/baseimage:focal-1.0.0
+	docker-squash --tag phusion/baseimage:focal-latest phusion/baseimage:focal-1.0.0
+	docker tag phusion/baseimage:focal-latest phusion/baseimage:focal-1.0.0
 	cd base && docker build -t $(base_image) .
 	docker-squash --tag $(base_image_squashed) $(base_image)
 	docker tag $(base_image_squashed) $(base_image)
