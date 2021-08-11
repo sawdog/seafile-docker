@@ -16,27 +16,27 @@ base:
 	docker-squash --tag phusion/baseimage:latest phusion/baseimage:0.11
 	docker tag phusion/baseimage:latest phusion/baseimage:0.11
 	cd base && docker build -t $(base_image) .
-	docker-squash --tag $(base_image_squashed) $(base_image)
+	docker-squas --tag $(base_image_squashed) $(base_image)
 	docker tag $(base_image_squashed) $(base_image)
 	docker rmi `docker images --filter "dangling=true" -q --no-trunc`
 
 server:
 	cd pro_seafile && cp -rf ../../scripts ./ && docker build -t $(server_image) .
+	rm -rf ./scripts
 	docker-squash --tag $(server_image_squashed) $(server_image) --from-layer=$(base_image)
 	docker tag $(server_image_squashed) $(server_image)
 	docker tag $(server_image) $(latest_server_image)
 	docker rmi `docker images --filter "dangling=true" -q --no-trunc`
-	rm -rf ./scripts
 
 push-base:
 	docker tag $(base_image) sawdog/$(base_image)
 	docker push sawdog/$(base_image)
 
 push-server:
-	docker tag $(pro_server_image) ${host}/$(pro_server_image)
-	docker tag $(pro_server_image) ${host}/$(latest_pro_server_image)
-	docker push ${host}/$(pro_server_image)
-	docker push ${host}/$(latest_pro_server_image)
+	docker tag $(pro_server_image) $(pro_server_image)
+	docker tag $(pro_server_image) $(latest_pro_server_image)
+	docker push $(pro_server_image)
+	docker push $(latest_pro_server_image)
 
 push: push-base push-server
 

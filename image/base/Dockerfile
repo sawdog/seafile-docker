@@ -25,6 +25,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     python3-rados \
     python3-setuptools \
     pwgen \
+    sqlite3 \
     tzdata \
     vim \
     wget \
