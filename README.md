@@ -2,47 +2,118 @@
 
 ## Why Fork It?
 
-I forked this for a few reasons. Firstly, I got tired of waiting and waiting with no pro updates.  When asking about them on the forums, nothing.  Rafio silence. Then I found a few docker images out there -- one is dodgy as fsck and he's asking for support. But his repacking of an open source project which he tries to get money from is.... closed.  No thanks.
+I forked this for a few reasons:
+1. I got tired of waiting and waiting for Docker to get pro updates. 
+  When asking about them on the forums, it was crickets and radio silence.
+  I found a few docker images out there, but I felt were either too dodgy 
+  or  they plain didn't work.  No thanks.
+2. This works.  I am using it.
+3. I want to be able to solve my own problems and simplify the layout and steps.
 
-Finally, This works.  I am using it.  
- 
-
-### How to use with Seafile Pro 7.x
-Note: I started with a fresh docker container based of this docker imagbes.  If you want to use your current container, you may just have to deal with symlink in 1 case.  Try it and let me know.
-
+### Seafile Pro 7.x
+Note: I started with a fresh docker container based of this docker a Pro 7.x image.
+  If you want to use your current container, you may just have to deal with 
+ symlink in 1 case.  Try it and let me know.
 
 ### Existing DB w/ New Host Container
-1. Run 7.x to 8.x upgrade script (i did this within my existing 7.1.17 container)
-2. Turn off existing seafile-pro 7 container.
-3. Clear old containers from locakl repo (be aware if you're pesisting changes
+Run 7.x to 8.x upgrade script (i did this within my existing 7.1.17 container)
+1. Turn off the 7.x container.
+```shell
+docker-compose down
+```
+This will clear the containers from local repo (be aware if you're persisting changes
  in the container, they will be lost.  Don't persist anything in these containers is my recommendation.)
-4. Start new container from the new seafile-pro 8.x images.
-5. Connect to your new container (you want a bash shell).
-6. Run seafile-server-latest/setup-seafile.sh
+2. Start new container from the new seafile-pro 8.x image in your docker-compose.
+```shell
+docker-compose up -d
+```
+3Connect to your new running container.
+```shell
+docker exec -it seafile /bin/bash
+```
+4. Rerun the setup script
+```shell
+./seafile-server-latest/setup-seafile.sh
+```
 
 To Support a single container and reuse of existing NGINX / Proxy these steps are required so that the Nginx container has access to the necessary media files.
-1. Stay in container or get a bash shell in the container.
-2. Move mv seafile-server-latest/seahub/media /shared/seafile
-8. To make things consistent, symlink to /opt/seafile along with the other 
-packages that you see there.  cd /opt/seafile; ln -s /shared/seafile/media .
-9. Symlink media from shared back into the pseahub package. 
+1. Stay logged into the container or re-login
+2. Move Media files:
+```shell
+mv seafile-server-latest/seahub/media /shared/seafile
+```
+8. To make things consistent symlink to /opt/seafile along with the other 
+packages that you see there.
+```shell
+cd /opt/seafile; ln -s /shared/seafile/media .
+```
+9. I add another symlink media from shared location to the orinal location in seahub. 
+```shell
   cd seafile-server-latest/seahub; ln -s /opt/seafile/media .
-10. Fix symlinks from this mess in media rm media/avatars; rm media/custom;
-cd media; ln -s ../seahub-data/avatars .; ln -s ../seahub-data/custom .
+```
+10. Not sure why this mess came about - will relook and see if it's the process; but you
+ have to fix symlinks in the media directory: 
+```shell
+cd /share/seafile/media; rm media/avatars; rm media/custom;
+cd media; ln -s /share/seafile/seahub-data/avatars .; ln -s /share/seafile/seahub-data/seahub-data/custom .
+```
 
-This is the most right I could figure out; it follows existing patterns and
-works in and out of the container. I then mount this media directory 
-on my Nginx proxy which also handles proxy responsibility for a dozen other containers as well.
+This seemed the best way for my setup that I could figure out. It it follows 
+the existing setup patterns and works in and out of the container if you mount the
+ volume from the host as I do. 
+
+Finally I mount this media directory 
+on in my Nginx proxy container where it can then serve those static media files.
+*Note*
+If you're running a different proxy setup, e.g. Nginx on a different host, this is not going to 
+work. I'll be thinking about it when i move over to Traefik.
 
 
 After the static files are mountable for your proxy, restart that and you  should be running a new, clean 8.x pro instance against your existing database and filestorage.
 
-### Todo
-It's still a bit messy, the scrips are over engineered for what's needed -- and then trying to trace it through is a pita.  For how this works. so they do one job, and that's simple and consistent.
+## Todo
 
+It's still a bit messy, the scripts are hard to follow for what's needed.
+Tracing errors and fixing then is still a pita, but think 9.0.5 and 9.0.6 images I've made 
+are few less messy. They still work and continue towards simple and consistent.
+
+### Traefik
 Moving forward I plan to move proxy on to Traefik. I expect it to be as ore more simple to use as a proxy - but my goal is that whatever proxy container or mechanism will *just work*.
 
 All of this should be simplified and moved into the container ]seafile container via the Dockerfile, which I plan to do. The above steps should be moot and the task will be -- mount a new volume to your proxy!
+
+## Gotchas
+
+### 9.0.6
+I had to install redis page in my container, so it's missing from the base image and the python packages which are included in pro/...
+
+#### Authentication for Elasticsearch (7.16)
+You have to turn on security - and in doing so causes Seafile indexing to fail.  This is easy to fix, but currently it's a manual step:
+
+1. Add to your elasticsearch docker-compose.yml environment for elasticsearch
+        - xpack.security.enabled=true
+2. Loging to the elasticsearch container:
+```sh
+docker exec -it elasticsearch /bin/sh
+```
+3. Setup passwords for the built-in elastic accounts:
+```sh
+./bin/elasticsearch-setup-passwords auto
+```
+4. Copy the output from the password setup into a secure location so that you
+    can use them as necessary.  Take note of the 'elastic' user for using in seafile
+5. Login to the seafile container:
+```shell
+docker exec -it seafile /bin/sh
+```
+6. Add Authentication support for the Elasticsearch in seafile.
+  Edit the connection.py file here `root@2f6b9830d50a:/opt/seafile/seafile-server-latest/pro/python/seafes/connection.py` to the following:
+```python
+def es_get_conn():
+    es = Elasticsearch(['{}:{}'.format(seafes_config.host, seafes_config.port)], http_auth=('elastic', ''YOUR_PASSWORD'), maxsize=50, timeout=30)
+    return es
+```
+7. Restart the container.
 
 ## About
 - [Docker](https://docker.com/) is an open source project to pack, ship and run any Linux application in a lighter weight, faster container than a traditional virtual machine.
