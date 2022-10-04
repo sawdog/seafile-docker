@@ -1,5 +1,15 @@
 [![Build Status](https://secure.travis-ci.org/haiwen/seafile-docker.png?branch=master)](http://travis-ci.org/haiwen/seafile-docker)
+# Do not Use this unless you know why you might want to.
+I originally set this up because there was no Seafile 8 or 9 release of the pro seafile server.  This is no longer the case. Over the weekend, I setup from scratch a seafile 9.0.9 instance.  It's not perfect, as it's still got too much in the release I beleive; but it's better than offroading as much as this has done.  I am actually trying to get my own builds back onto a standard baseline.
 
+These are the 2 primary reasons I can think of -- and I'm willing to handle them as one-offs when I upgrade (I think). I'm still working throught that currently.  For me, these are 2 reason why you might want the below:
+
+ * Don't want Nginx in your Seafile Instnace
+ * Want a more current version of ElasticSearch (requires Auth and Seafile doesn't support this -- I've put it in and have it working)
+   - I plan on seeing if I can get this pushed in a way that would be pulled into the stack; but I don't have time to figure out all the scripts and ways to get the conf values into that right places for that to work. 
+   
+Also the below partially applies.
+ 
 ## Why Fork It?
 
 I forked this for a few reasons:
